@@ -1,8 +1,13 @@
 import { Application, AndroidApplication } from "@nativescript/core";
+import { stopWaitingForResume, isWaitingForResume } from "../oauth"
 
 import { TnsOAuthClient } from "../index";
 
 Application.android.on(AndroidApplication.activityResumedEvent, (args) => {
+  if (!isWaitingForResume()) {
+    return;
+  }
+  stopWaitingForResume();
   if (
     new String(args.activity.getIntent().getAction()).valueOf() ===
     new String(android.content.Intent.ACTION_VIEW).valueOf()

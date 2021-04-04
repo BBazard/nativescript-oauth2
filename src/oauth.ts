@@ -16,6 +16,16 @@ import {
   jsArrayToNSArray,
   httpResponseToToken,
 } from "./tns-oauth-utils";
+export let waitingForResume = false;
+export function isWaitingForResume() {
+    return waitingForResume;
+}
+export function startWaitingForResume() {
+    waitingForResume = true;
+}
+export function stopWaitingForResume() {
+    waitingForResume = false;
+}
 
 export interface ITnsOAuthTokenResult {
   accessToken: string;
@@ -62,6 +72,7 @@ export class TnsOAuthClient {
 
   public loginWithCompletion(completion?: TnsOAuthClientLoginBlock) {
     if (this.provider) {
+      startWaitingForResume();
       this.loginController.loginWithParametersFrameCompletion(
         null,
         Frame.topmost(),

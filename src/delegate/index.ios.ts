@@ -1,4 +1,5 @@
 import { TnsOAuthClient } from "../index";
+import { stopWaitingForResume, isWaitingForResume } from "../oauth"
 
 function setup() {
   @ObjCClass(UIApplicationDelegate)
@@ -43,6 +44,10 @@ function setup() {
         return false;
       }
 
+      if (!isWaitingForResume()) {
+        return false;
+      }
+      stopWaitingForResume();
       if (url.scheme.toLowerCase() === TnsOAuthClientAppDelegate._urlScheme) {
         TnsOAuthClientAppDelegate._client.resumeWithUrl(url.absoluteString);
         return true;
